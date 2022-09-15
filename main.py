@@ -104,7 +104,7 @@ class WorksheetInterface:
     def update_payment_methods(self):
         self.payment_methods = {method: None for method in self.payment_methods}
         for column, (method, value) in enumerate(self.payment_methods.items()):
-            self.payment_methods.update({method: self.worksheet.cell(2, column + 1).value})
+            self.payment_methods.update({method: self.worksheet.cell(2, column + 2).value})
 
     def get_limit(self):
         return self.worksheet.acell('A2').value
@@ -164,6 +164,7 @@ class MainRoot:
 
             print(f"{now.strftime('%d.%m %H:%M:%S')}. Sleeping for {int((next_column - hour) * 3600)} seconds")
             time.sleep((next_column - hour) * 3600)
+            # time.sleep(1)
             self.pass_cell(timeframes[next_column] + row)
 
         self.wks_interface.color_biggest_spread(row)
@@ -172,7 +173,7 @@ class MainRoot:
 
 
 def main(spreadsheet_name, filename="service_account.json"):
-    payment_methods = ["RosBank", "Tinkoff", "RaiffeisenBankRussia", "QIWI"]
+    payment_methods = ["RosBankNew", "TinkoffNew", "RaiffeisenBankRussia", "QIWI"]
     service_account = gspread.service_account(filename=filename)
     spreadsheet = service_account.open(spreadsheet_name)
 
