@@ -164,7 +164,7 @@ class MainRoot:
 
             print(f"{now.strftime('%d.%m %H:%M:%S')}. Sleeping for {int((next_column - hour) * 3600)} seconds")
             time.sleep((next_column - hour) * 3600)
-            # time.sleep(1)
+            # time.sleep(15)
             self.pass_cell(timeframes[next_column] + row)
 
         self.wks_interface.color_biggest_spread(row)
@@ -176,11 +176,10 @@ def main(spreadsheet_name, filename="service_account.json"):
     payment_methods = ["RosBankNew", "TinkoffNew", "RaiffeisenBankRussia", "QIWI"]
     service_account = gspread.service_account(filename=filename)
     spreadsheet = service_account.open(spreadsheet_name)
+    worksheet_interface = WorksheetInterface('main', spreadsheet, payment_methods)
 
     while True:
-        worksheet_interface = WorksheetInterface('main', spreadsheet, payment_methods)
         root = MainRoot(worksheet_interface)
-
         last_row = worksheet_interface.load_row()
         if last_row[0] == '35':
             worksheet_interface.clear()
